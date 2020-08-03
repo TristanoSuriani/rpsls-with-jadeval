@@ -1,4 +1,4 @@
-package nl.tsuriani.rpsls.domainservices.rule;
+package nl.tsuriani.rpsls.domain.rule;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

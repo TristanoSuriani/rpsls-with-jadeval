@@ -1,9 +1,9 @@
-package nl.tsuriani.rpsls.domainservices.mutation;
+package nl.tsuriani.rpsls.domain.mutation;
 
 import nl.tsuriani.rpsls.domain.RPSLS;
 import nl.tsuriani.rpsls.domain.Session;
 import nl.tsuriani.rpsls.domain.Session.Status;
-import nl.tsuriani.rpsls.domainservices.rule.RPSLSRulesBuilder;
+import nl.tsuriani.rpsls.domain.rule.RPSLSRulesBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +29,7 @@ class MutateSessionTest {
 
 	@Test
 	void createSessionWithPlayer1() {
-		RPSLS session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
+		Session session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
 		assertEquals(player1.getUuid(), session.getPlayer1().getUuid());
 		assertEquals(player1.getName(), session.getPlayer1().getName());
 		assertEquals(0, session.getPlayer1().getScore());
@@ -41,7 +41,7 @@ class MutateSessionTest {
 
 	@Test
 	void addPlayer2ToSession() {
-		RPSLS session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
+		Session session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
 		session = mutateSession.addPlayer2ToSession(session, player2.getUuid().toString(), player2.getName());
 		assertEquals(player1.getUuid(), session.getPlayer1().getUuid());
 		assertEquals(player1.getName(), session.getPlayer1().getName());
@@ -56,7 +56,7 @@ class MutateSessionTest {
 
 	@Test
 	void player1Wins() {
-		RPSLS session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
+		Session session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
 		session = mutateSession.addPlayer2ToSession(session, player2.getUuid().toString(), player2.getName());
 
 		// Test 1. Player 1 adds a move. Expected: the move is registered, the status is changed accordingly.
@@ -125,7 +125,7 @@ class MutateSessionTest {
 
 	@Test
 	void player2Wins() {
-		RPSLS session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
+		Session session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
 		session = mutateSession.addPlayer2ToSession(session, player2.getUuid().toString(), player2.getName());
 
 		// Test 1. Player 2 adds a move. Expected: the move is registered, the status is changed accordingly.
@@ -195,7 +195,7 @@ class MutateSessionTest {
 	@Test
 	void player1CancelsTheSession() {
 		// Test 1. Player 1 can cancel the session immediately after joining.
-		RPSLS session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
+		Session session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
 		session = mutateSession.player1CancelsTheSession(session);
 		assertSessionIsCancelledByPlayer1(session);
 
@@ -208,7 +208,7 @@ class MutateSessionTest {
 				READY_FOR_ROUND_EVALUATION,
 				ROUND_EVALUATED);
 
-		final RPSLS sessionForLegalStatusTest = session;
+		final Session sessionForLegalStatusTest = session;
 		legalStatuses.stream()
 				.map(status -> getSessionWithDesiredStatus(sessionForLegalStatusTest, status))
 				.map(mutateSession::player1CancelsTheSession)
@@ -220,7 +220,7 @@ class MutateSessionTest {
 				CANCELLED_BY_SYSTEM,
 				CANCELLED_BY_PLAYER2);
 
-		final RPSLS sessionForIlegalStatusTest = session;
+		final Session sessionForIlegalStatusTest = session;
 		illegalStatuses.stream()
 				.map(status -> getSessionWithDesiredStatus(sessionForIlegalStatusTest, status))
 				.map(mutateSession::player1CancelsTheSession)
@@ -230,7 +230,7 @@ class MutateSessionTest {
 	@Test
 	void player2CancelsTheSession() {
 		// Test 1. Player 2 can cancel the session immediately after joining.
-		RPSLS session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
+		Session session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
 		session = mutateSession.player1CancelsTheSession(session);
 		assertSessionIsCancelledByPlayer1(session);
 
@@ -242,7 +242,7 @@ class MutateSessionTest {
 				READY_FOR_ROUND_EVALUATION,
 				ROUND_EVALUATED);
 
-		final RPSLS sessionForLegalStatusTest = session;
+		final Session sessionForLegalStatusTest = session;
 		legalStatuses.stream()
 				.map(status -> getSessionWithDesiredStatus(sessionForLegalStatusTest, status))
 				.map(mutateSession::player2CancelsTheSession)
@@ -255,7 +255,7 @@ class MutateSessionTest {
 				CANCELLED_BY_SYSTEM,
 				CANCELLED_BY_PLAYER1);
 
-		final RPSLS sessionForIlegalStatusTest = session;
+		final Session sessionForIlegalStatusTest = session;
 		illegalStatuses.stream()
 				.map(status -> getSessionWithDesiredStatus(sessionForIlegalStatusTest, status))
 				.map(mutateSession::player2CancelsTheSession)
@@ -265,7 +265,7 @@ class MutateSessionTest {
 	@Test
 	void systemCancelsTheSession() {
 		// Test 1. System can cancel the session immediately after joining.
-		RPSLS session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
+		Session session = mutateSession.createSessionWithPlayer1(player1.getUuid().toString(), player1.getName());
 		session = mutateSession.player1CancelsTheSession(session);
 		assertSessionIsCancelledByPlayer1(session);
 
@@ -278,7 +278,7 @@ class MutateSessionTest {
 				READY_FOR_ROUND_EVALUATION,
 				ROUND_EVALUATED);
 
-		final RPSLS sessionForLegalStatusTest = session;
+		final Session sessionForLegalStatusTest = session;
 		legalStatuses.stream()
 				.map(status -> getSessionWithDesiredStatus(sessionForLegalStatusTest, status))
 				.map(mutateSession::systemCancelsTheSession)
@@ -290,47 +290,47 @@ class MutateSessionTest {
 				CANCELLED_BY_PLAYER1,
 				CANCELLED_BY_PLAYER2);
 
-		final RPSLS sessionForIlegalStatusTest = session;
+		final Session sessionForIlegalStatusTest = session;
 		illegalStatuses.stream()
 				.map(status -> getSessionWithDesiredStatus(sessionForIlegalStatusTest, status))
 				.map(mutateSession::systemCancelsTheSession)
 				.forEach(this::assertSessionIsNotCancelledBySystem);
 	}
 
-	private void assertSessionIsCancelledByPlayer1(RPSLS session) {
+	private void assertSessionIsCancelledByPlayer1(Session session) {
 		// Expected: moves are unregistered, status is set accordingly.
 		assertNull(session.getMovePlayer1());
 		assertNull(session.getMovePlayer2());
 		assertEquals(CANCELLED_BY_PLAYER1, session.getStatus());
 	}
 
-	private void assertSessionIsNotCancelledByPlayer1(RPSLS session) {
+	private void assertSessionIsNotCancelledByPlayer1(Session session) {
 		assertNotEquals(CANCELLED_BY_PLAYER1, session.getStatus());
 	}
 
-	private void assertSessionIsCancelledByPlayer2(RPSLS session) {
+	private void assertSessionIsCancelledByPlayer2(Session session) {
 		// Expected: moves are unregistered, status is set accordingly.
 		assertNull(session.getMovePlayer1());
 		assertNull(session.getMovePlayer2());
 		assertEquals(CANCELLED_BY_PLAYER2, session.getStatus());
 	}
 
-	private void assertSessionIsNotCancelledByPlayer2(RPSLS session) {
+	private void assertSessionIsNotCancelledByPlayer2(Session session) {
 		assertNotEquals(CANCELLED_BY_PLAYER2, session.getStatus());
 	}
 
-	private void assertSessionIsCancelledBySystem(RPSLS session) {
+	private void assertSessionIsCancelledBySystem(Session session) {
 		// Expected: moves are unregistered, status is set accordingly.
 		assertNull(session.getMovePlayer1());
 		assertNull(session.getMovePlayer2());
 		assertEquals(CANCELLED_BY_SYSTEM, session.getStatus());
 	}
 
-	private void assertSessionIsNotCancelledBySystem(RPSLS session) {
+	private void assertSessionIsNotCancelledBySystem(Session session) {
 		assertNotEquals(CANCELLED_BY_SYSTEM, session.getStatus());
 	}
 
-	private RPSLS getSessionWithDesiredStatus(RPSLS session, Status status) {
+	private Session getSessionWithDesiredStatus(Session session, Status status) {
 		return new RPSLS(session.getUuid(),
 				session.getPlayer1(),
 				session.getPlayer2(),

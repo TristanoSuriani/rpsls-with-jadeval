@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Getter
-public abstract class Session {
+public class Session {
 
 	private UUID uuid;
 	private Player1 player1;

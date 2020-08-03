@@ -1,7 +1,7 @@
 package nl.tsuriani.rpsls.applicationservices;
 
-import nl.tsuriani.rpsls.domainservices.rule.RPSLSRulesBuilder;
-import nl.tsuriani.rpsls.domainservices.rule.Rules;
+import nl.tsuriani.rpsls.domain.rule.RPSLSRulesBuilder;
+import nl.tsuriani.rpsls.domain.rule.Rules;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

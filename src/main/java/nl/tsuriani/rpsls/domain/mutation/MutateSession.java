@@ -1,9 +1,8 @@
-package nl.tsuriani.rpsls.domainservices.mutation;
+package nl.tsuriani.rpsls.domain.mutation;
 
 import lombok.AllArgsConstructor;
-import nl.tsuriani.rpsls.domain.RPSLS;
 import nl.tsuriani.rpsls.domain.Session;
-import nl.tsuriani.rpsls.domainservices.rule.Rules;
+import nl.tsuriani.rpsls.domain.rule.Rules;
 
 import java.util.UUID;
 
@@ -11,8 +10,8 @@ import java.util.UUID;
 public class MutateSession {
 	private Rules rules;
 
-	public RPSLS createSessionWithPlayer1(String uuid, String name) {
-		return new RPSLS(UUID.randomUUID(),
+	public Session createSessionWithPlayer1(String uuid, String name) {
+		return new Session(UUID.randomUUID(),
 				new Session.Player1(UUID.fromString(uuid), name),
 				null,
 				null,
@@ -20,8 +19,8 @@ public class MutateSession {
 				Session.Status.WAITING_FOR_PLAYER2);
 	}
 
-	public RPSLS addPlayer2ToSession(RPSLS session, String uuid, String name) {
-		return startNewRound(new RPSLS(session.getUuid(),
+	public Session addPlayer2ToSession(Session session, String uuid, String name) {
+		return startNewRound(new Session(session.getUuid(),
 				session.getPlayer1(),
 				new Session.Player2(UUID.fromString(uuid), name),
 				null,
@@ -29,58 +28,20 @@ public class MutateSession {
 				Session.Status.PLAYER2_JOINED));
 	}
 
-	public RPSLS addMovePlayer1(RPSLS session, Session.MovePlayer1 movePlayer1) {
-		switch (session.getStatus()) {
-
-			case WAITING_FOR_PLAYER1_TO_MOVE:
-				return new RPSLS(session.getUuid(),
-					session.getPlayer1(),
-					session.getPlayer2(),
-					movePlayer1,
-					session.getMovePlayer2(),
-					Session.Status.READY_FOR_ROUND_EVALUATION);
-
-			case WAITING_FOR_BOTH_PLAYERS_TO_MOVE:
-				return new RPSLS(session.getUuid(),
-						session.getPlayer1(),
-						session.getPlayer2(),
-						movePlayer1,
-						session.getMovePlayer2(),
-					Session.Status.WAITING_FOR_PLAYER2_TO_MOVE);
-
-			default:
-				return session;
+	public Session addMove(Session session, String playerUUID, String username, Session.Move move) {
+		if (isPlayer1(session, playerUUID, username)) {
+			return addMovePlayer1(session, new Session.MovePlayer1(move.getName()));
+		} else if (isPlayer2(session, playerUUID, username)) {
+			return addMovePlayer2(session, new Session.MovePlayer2(move.getName()));
+		} else {
+			return session;
 		}
 	}
 
-	public RPSLS addMovePlayer2(RPSLS session, Session.MovePlayer2 movePlayer2) {
-		switch (session.getStatus()) {
-
-			case WAITING_FOR_PLAYER2_TO_MOVE:
-				return new RPSLS(session.getUuid(),
-						session.getPlayer1(),
-						session.getPlayer2(),
-						session.getMovePlayer1(),
-						movePlayer2,
-						Session.Status.READY_FOR_ROUND_EVALUATION);
-
-			case WAITING_FOR_BOTH_PLAYERS_TO_MOVE:
-				return new RPSLS(session.getUuid(),
-						session.getPlayer1(),
-						session.getPlayer2(),
-						session.getMovePlayer1(),
-						movePlayer2,
-						Session.Status.WAITING_FOR_PLAYER1_TO_MOVE);
-
-			default:
-				return session;
-		}
-	}
-
-	public RPSLS evaluateRound(RPSLS session) {
+	public Session evaluateRound(Session session) {
 		switch (session.getStatus()) {
 			case READY_FOR_ROUND_EVALUATION:
-				final RPSLS evaluationResult;
+				final Session evaluationResult;
 				if (rules.firstMoveScoresAgainstTheSecondOne(session.getMovePlayer1(), session.getMovePlayer2())) {
 					evaluationResult = increaseScorePlayer1(session);
 					if (player1ReachedTheMaximumScore(evaluationResult)) {
@@ -105,10 +66,10 @@ public class MutateSession {
 		}
 	}
 
-	public RPSLS player1Won(RPSLS session) {
+	public Session player1Won(Session session) {
 		switch (session.getStatus()) {
 			case ROUND_EVALUATED:
-				return new RPSLS(session.getUuid(),
+				return new Session(session.getUuid(),
 						session.getPlayer1(),
 						session.getPlayer2(),
 						null,
@@ -120,10 +81,10 @@ public class MutateSession {
 		}
 	}
 
-	public RPSLS player2Won(RPSLS session) {
+	public Session player2Won(Session session) {
 		switch (session.getStatus()) {
 			case ROUND_EVALUATED:
-				return new RPSLS(session.getUuid(),
+				return new Session(session.getUuid(),
 						session.getPlayer1(),
 						session.getPlayer2(),
 						null,
@@ -135,7 +96,64 @@ public class MutateSession {
 		}
 	}
 
-	public RPSLS player1CancelsTheSession(RPSLS session) {
+	public Session cancelSession(Session session, String playerUUID, String username) {
+		if (isPlayer1(session, playerUUID, username)) {
+			return player1CancelsTheSession(session);
+		} else if (isPlayer2(session, playerUUID, username)) {
+			return player2CancelsTheSession(session);
+		}
+		else return session;
+	}
+
+	Session addMovePlayer1(Session session, Session.MovePlayer1 movePlayer1) {
+		switch (session.getStatus()) {
+
+			case WAITING_FOR_PLAYER1_TO_MOVE:
+				return new Session(session.getUuid(),
+						session.getPlayer1(),
+						session.getPlayer2(),
+						movePlayer1,
+						session.getMovePlayer2(),
+						Session.Status.READY_FOR_ROUND_EVALUATION);
+
+			case WAITING_FOR_BOTH_PLAYERS_TO_MOVE:
+				return new Session(session.getUuid(),
+						session.getPlayer1(),
+						session.getPlayer2(),
+						movePlayer1,
+						session.getMovePlayer2(),
+						Session.Status.WAITING_FOR_PLAYER2_TO_MOVE);
+
+			default:
+				return session;
+		}
+	}
+
+	Session addMovePlayer2(Session session, Session.MovePlayer2 movePlayer2) {
+		switch (session.getStatus()) {
+
+			case WAITING_FOR_PLAYER2_TO_MOVE:
+				return new Session(session.getUuid(),
+						session.getPlayer1(),
+						session.getPlayer2(),
+						session.getMovePlayer1(),
+						movePlayer2,
+						Session.Status.READY_FOR_ROUND_EVALUATION);
+
+			case WAITING_FOR_BOTH_PLAYERS_TO_MOVE:
+				return new Session(session.getUuid(),
+						session.getPlayer1(),
+						session.getPlayer2(),
+						session.getMovePlayer1(),
+						movePlayer2,
+						Session.Status.WAITING_FOR_PLAYER1_TO_MOVE);
+
+			default:
+				return session;
+		}
+	}
+
+	Session player1CancelsTheSession(Session session) {
 		switch (session.getStatus()) {
 			case PLAYER1_WON:
 			case PLAYER2_WON:
@@ -145,7 +163,7 @@ public class MutateSession {
 				return session;
 
 			default:
-				return new RPSLS(session.getUuid(),
+				return new Session(session.getUuid(),
 						session.getPlayer1(),
 						session.getPlayer2(),
 						null,
@@ -154,7 +172,7 @@ public class MutateSession {
 		}
 	}
 
-	public RPSLS player2CancelsTheSession(RPSLS session) {
+	Session player2CancelsTheSession(Session session) {
 		switch (session.getStatus()) {
 			case WAITING_FOR_PLAYER2:
 			case PLAYER1_WON:
@@ -165,7 +183,7 @@ public class MutateSession {
 				return session;
 
 			default:
-				return new RPSLS(session.getUuid(),
+				return new Session(session.getUuid(),
 						session.getPlayer1(),
 						session.getPlayer2(),
 						null,
@@ -174,7 +192,7 @@ public class MutateSession {
 		}
 	}
 
-	public RPSLS systemCancelsTheSession(RPSLS session) {
+	public Session systemCancelsTheSession(Session session) {
 		switch (session.getStatus()) {
 			case PLAYER1_WON:
 			case PLAYER2_WON:
@@ -184,7 +202,7 @@ public class MutateSession {
 				return session;
 
 			default:
-				return new RPSLS(session.getUuid(),
+				return new Session(session.getUuid(),
 						session.getPlayer1(),
 						session.getPlayer2(),
 						null,
@@ -193,8 +211,12 @@ public class MutateSession {
 		}
 	}
 
-	private RPSLS increaseScorePlayer1(RPSLS session) {
-		return new RPSLS(session.getUuid(),
+	public Session keepSessionUnchanged(Session session) {
+		return session;
+	}
+
+	private Session increaseScorePlayer1(Session session) {
+		return new Session(session.getUuid(),
 				new Session.Player1(session.getPlayer1().getUuid(),
 						session.getPlayer1().getName(),
 						session.getPlayer1().getScore() + 1),
@@ -204,8 +226,8 @@ public class MutateSession {
 				Session.Status.ROUND_EVALUATED);
 	}
 
-	private RPSLS increaseScorePlayer2(RPSLS session) {
-		return new RPSLS(session.getUuid(),
+	private Session increaseScorePlayer2(Session session) {
+		return new Session(session.getUuid(),
 				session.getPlayer1(),
 				new Session.Player2(session.getPlayer2().getUuid(),
 						session.getPlayer2().getName(),
@@ -215,8 +237,8 @@ public class MutateSession {
 				Session.Status.ROUND_EVALUATED);
 	}
 
-	private RPSLS leaveScoreUnchanged(RPSLS session) {
-		return new RPSLS(session.getUuid(),
+	private Session leaveScoreUnchanged(Session session) {
+		return new Session(session.getUuid(),
 				session.getPlayer1(),
 				session.getPlayer2(),
 				session.getMovePlayer1(),
@@ -224,11 +246,11 @@ public class MutateSession {
 				Session.Status.ROUND_EVALUATED);
 	}
 
-	private RPSLS startNewRound(RPSLS session) {
+	private Session startNewRound(Session session) {
 		switch (session.getStatus()) {
 			case PLAYER2_JOINED:
 			case ROUND_EVALUATED:
-				return new RPSLS(session.getUuid(),
+				return new Session(session.getUuid(),
 						session.getPlayer1(),
 						session.getPlayer2(),
 						null,
@@ -239,11 +261,19 @@ public class MutateSession {
 		}
 	}
 
-	private boolean player1ReachedTheMaximumScore(RPSLS session) {
+	private boolean isPlayer1(Session session, String playerUUID, String username) {
+		return session.getPlayer1().getUuid().toString().equals(playerUUID) && session.getPlayer1().getName().equals(username);
+	}
+
+	private boolean isPlayer2(Session session, String playerUUID, String username) {
+		return session.getPlayer2().getUuid().toString().equals(playerUUID) && session.getPlayer2().getName().equals(username);
+	}
+
+	private boolean player1ReachedTheMaximumScore(Session session) {
 		return session.getPlayer1().getScore() == rules.getMaximumScore();
 	}
 
-	private boolean player2ReachedTheMaximumScore(RPSLS session) {
+	private boolean player2ReachedTheMaximumScore(Session session) {
 		return session.getPlayer2().getScore() == rules.getMaximumScore();
 	}
 }

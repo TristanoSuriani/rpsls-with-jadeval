@@ -1,4 +1,4 @@
-package nl.tsuriani.rpsls.domainservices.event;
+package nl.tsuriani.rpsls.infra.messaging.event;
 
 public enum EventType {
 	PLAYER_JOINED,
