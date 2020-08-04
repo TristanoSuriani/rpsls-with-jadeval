@@ -6,7 +6,6 @@ import nl.tsuriani.rpsls.domain.mutation.MutateSession;
 import nl.tsuriani.rpsls.domainservices.SessionRepository;
 import nl.tsuriani.rpsls.domainservices.SessionService;
 
-import java.util.Optional;
 
 @AllArgsConstructor
 public class RPSLSSessionService implements SessionService {
@@ -15,8 +14,8 @@ public class RPSLSSessionService implements SessionService {
 
 	@Override
 	public Session joinOrCreateSession(String playerUUID, String username) {
-		Optional<Session> openSession = sessionRepository.findOpenSession();
-		return openSession.map(session -> mutateSession.addPlayer2ToSession(session, playerUUID, username))
+		return sessionRepository.findOpenSession()
+				.map(session -> mutateSession.addPlayer2ToSession(session, playerUUID, username))
 				.orElseGet(() -> mutateSession.createSessionWithPlayer1(playerUUID, username));
 	}
 

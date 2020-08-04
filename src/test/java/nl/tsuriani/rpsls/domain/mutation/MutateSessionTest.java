@@ -11,8 +11,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static nl.tsuriani.rpsls.domain.Session.Status.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static nl.tsuriani.rpsls.domain.Session.Status.CANCELLED_BY_PLAYER1;
+import static nl.tsuriani.rpsls.domain.Session.Status.CANCELLED_BY_PLAYER2;
+import static nl.tsuriani.rpsls.domain.Session.Status.CANCELLED_BY_SYSTEM;
+import static nl.tsuriani.rpsls.domain.Session.Status.PLAYER1_WON;
+import static nl.tsuriani.rpsls.domain.Session.Status.PLAYER2_JOINED;
+import static nl.tsuriani.rpsls.domain.Session.Status.PLAYER2_WON;
+import static nl.tsuriani.rpsls.domain.Session.Status.READY_FOR_ROUND_EVALUATION;
+import static nl.tsuriani.rpsls.domain.Session.Status.ROUND_EVALUATED;
+import static nl.tsuriani.rpsls.domain.Session.Status.WAITING_FOR_BOTH_PLAYERS_TO_MOVE;
+import static nl.tsuriani.rpsls.domain.Session.Status.WAITING_FOR_PLAYER1_TO_MOVE;
+import static nl.tsuriani.rpsls.domain.Session.Status.WAITING_FOR_PLAYER2;
+import static nl.tsuriani.rpsls.domain.Session.Status.WAITING_FOR_PLAYER2_TO_MOVE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MutateSessionTest {
 

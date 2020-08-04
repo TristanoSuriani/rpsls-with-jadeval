@@ -1,6 +1,10 @@
 package nl.tsuriani.rpsls.domain.rule;
 
-import static nl.tsuriani.rpsls.domain.RPSLS.*;
+import static nl.tsuriani.rpsls.domain.RPSLS.lizard;
+import static nl.tsuriani.rpsls.domain.RPSLS.paper;
+import static nl.tsuriani.rpsls.domain.RPSLS.rock;
+import static nl.tsuriani.rpsls.domain.RPSLS.scissors;
+import static nl.tsuriani.rpsls.domain.RPSLS.spock;
 
 public class RPSLSRulesBuilder extends RulesBuilder {
 	@Override

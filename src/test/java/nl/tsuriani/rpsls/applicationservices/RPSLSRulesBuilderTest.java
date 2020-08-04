@@ -5,8 +5,13 @@ import nl.tsuriani.rpsls.domain.rule.Rules;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static nl.tsuriani.rpsls.domain.RPSLS.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static nl.tsuriani.rpsls.domain.RPSLS.lizard;
+import static nl.tsuriani.rpsls.domain.RPSLS.paper;
+import static nl.tsuriani.rpsls.domain.RPSLS.rock;
+import static nl.tsuriani.rpsls.domain.RPSLS.scissors;
+import static nl.tsuriani.rpsls.domain.RPSLS.spock;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RPSLSRulesBuilderTest {
 	private Rules rules;

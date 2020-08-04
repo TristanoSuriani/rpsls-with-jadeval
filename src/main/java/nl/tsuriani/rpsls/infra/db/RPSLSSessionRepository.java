@@ -1,7 +1,7 @@
 package nl.tsuriani.rpsls.infra.db;
 
-import nl.tsuriani.rpsls.domainservices.SessionRepository;
 import nl.tsuriani.rpsls.domain.Session;
+import nl.tsuriani.rpsls.domainservices.SessionRepository;
 
 import java.util.List;
 import java.util.Optional;
