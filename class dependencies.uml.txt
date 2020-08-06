@@ -1,0 +1,83 @@
+@startuml
+namespace rpsls.domain {
+  enum Status {
+    WAITING_FOR_PLAYER2,
+    PLAYER2_JOINED,
+    WAITING_FOR_BOTH_PLAYERS_TO_MOVE,
+    WAITING_FOR_PLAYER1_TO_MOVE,
+    WAITING_FOR_PLAYER2_TO_MOVE,
+    READY_FOR_ROUND_EVALUATION,
+    ROUND_EVALUATED,
+    PLAYER1_WON,
+    PLAYER2_WON,
+    CANCELLED_BY_SYSTEM,
+    CANCELLED_BY_PLAYER1,
+    CANCELLED_BY_PLAYER2
+  }
+
+  class Session {
+    UUID uuid
+    Player1 player1
+    Player2 player2
+    MovePlayer1 movePlayer1
+    MovePlayer2 movePlayer2
+    Status status
+  }
+
+  class Move
+  class Player
+  class MovePlayer1
+  class MovePlayer2
+  class Player1
+  class Player2
+
+  class MutateSession
+  class RPSLSRules
+}
+
+namespace rpsls.domainservices {
+  interface SessionService
+}
+
+namespace rpsls.applicationservices {
+  class RPSLSSessionService
+}
+
+namespace rpsls.infra {
+  class SessionFacade
+  class SessionDTO
+  class SessionEntity
+}
+
+rpsls.applicationservices.RPSLSSessionService --|> rpsls.domainservices.SessionService
+rpsls.applicationservices.RPSLSSessionService --> rpsls.domain.Session
+
+rpsls.infra.SessionDTO --> rpsls.domain.Session
+
+rpsls.domain.MutateSession --> rpsls.domain.Session
+rpsls.domain.MutateSession --> rpsls.domain.RPSLSRules
+
+rpsls.infra.RPSLSController --> rpsls.infra.SessionFacade
+rpsls.infra.RPSLSController --> rpsls.infra.SessionDTO
+
+rpsls.infra.SessionFacade --> rpsls.applicationservices.RPSLSSessionService
+rpsls.infra.SessionFacade --> rpsls.infra.SessionDTO
+rpsls.infra.SessionFacade --> rpsls.domain.Session
+
+rpsls.infra.SessionEntity --> rpsls.domain.Session
+
+rpsls.domain.RPSLSRules --> rpsls.domain.Session
+rpsls.domain.RPSLSRules --> rpsls.domain.Move
+
+rpsls.domain.Player1 --|> rpsls.domain.Player
+rpsls.domain.Player2 --|> rpsls.domain.Player
+
+rpsls.domain.MovePlayer1 --|> rpsls.domain.Move
+rpsls.domain.MovePlayer2 --|> rpsls.domain.Move
+
+rpsls.domain.Session --> rpsls.domain.Status
+rpsls.domain.Session --> rpsls.domain.MovePlayer1
+rpsls.domain.Session --> rpsls.domain.MovePlayer2
+rpsls.domain.Session --> rpsls.domain.Player1
+rpsls.domain.Session --> rpsls.domain.Player2
+@enduml

@@ -2,6 +2,7 @@ package nl.tsuriani.rpsls.infra.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import nl.tsuriani.rpsls.domain.Session;
 
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class SessionDTO {
 				sessionDTO.status == null ? null : Session.Status.valueOf(sessionDTO.status.toUpperCase().trim()));
 	}
 
-	@AllArgsConstructor
+	@NoArgsConstructor
 	@Data
 	public static class PlayerDTO {
 		private String uuid;

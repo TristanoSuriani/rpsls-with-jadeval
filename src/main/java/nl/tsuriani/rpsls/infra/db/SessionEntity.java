@@ -4,6 +4,7 @@ import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import nl.tsuriani.rpsls.domain.Session;
 
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @MongoEntity(collection = "sessions")
 public class SessionEntity extends PanacheMongoEntity {
@@ -24,6 +26,10 @@ public class SessionEntity extends PanacheMongoEntity {
 	private String status;
 
 	public SessionEntity(Session session) {
+		merge(session);
+	}
+
+	public void merge(Session session) {
 		this.uuid = session.getUuid() == null ? null : session.getUuid().toString();
 		this.player1 = session.getPlayer1() == null ? null : new PlayerEntity(session.getPlayer1());
 		this.player2 = session.getPlayer2() == null ? null : new PlayerEntity(session.getPlayer2());
@@ -61,6 +67,7 @@ public class SessionEntity extends PanacheMongoEntity {
 	}
 
 	@AllArgsConstructor
+	@NoArgsConstructor
 	@Data
 	public static class PlayerEntity {
 		private String uuid;
