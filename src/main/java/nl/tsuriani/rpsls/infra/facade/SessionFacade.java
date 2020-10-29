@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class SessionFacade {
+public final class SessionFacade {
 	private SessionService sessionService;
 
 	public List<SessionDTO> get() {
@@ -28,6 +28,10 @@ public class SessionFacade {
 	}
 
 	public void sendChoice(ChoiceDTO choice) {
-		sessionService.chooseMove(choice.sessionUUID, choice.clientUUID, choice.username, new Session.Move(choice.move));
+		sessionService.chooseMove(choice.sessionUUID, choice.clientUUID, choice.username, Session.Move.valueOf(choice.move));
+	}
+
+	public void disconnectPlayer(SessionDTO sessionDTO, SessionDTO.PlayerDTO playerDTO) {
+		sessionService.cancelSession(sessionDTO.getUuid(), playerDTO.getUuid(), playerDTO.getName());
 	}
 }

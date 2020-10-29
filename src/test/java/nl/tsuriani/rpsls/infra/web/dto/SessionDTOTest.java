@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class SessionDTOTest {
 	@Test
 	void testEmptyValuesShouldNotRaiseNullPointers() {
-		Session session1 = new Session(null, null, null, null, null, null);
+		Session session1 = Session.builder().build();
 		SessionDTO sessionDTO = new SessionDTO(session1);
-		Session session2 = SessionDTO.fromDTO(sessionDTO);
+		Session session2 = SessionDTO.toSession(sessionDTO);
 
 		Assertions.assertAll(() -> {
 			assertNotNull(sessionDTO);

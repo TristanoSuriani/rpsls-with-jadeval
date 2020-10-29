@@ -1,38 +1,42 @@
 package nl.tsuriani.rpsls.applicationservices;
 
 import lombok.AllArgsConstructor;
+import nl.suriani.jadeval.execution.workflow.WorkflowDelegate;
+import nl.tsuriani.rpsls.applicationservices.context.SessionContext;
+import nl.tsuriani.rpsls.applicationservices.context.SessionContextFactory;
 import nl.tsuriani.rpsls.domain.Session;
-import nl.tsuriani.rpsls.domain.mutation.MutateSession;
 import nl.tsuriani.rpsls.domainservices.SessionService;
+import nl.tsuriani.rpsls.infra.db.AuditLogEntity;
 import nl.tsuriani.rpsls.infra.db.SessionEntity;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
 public class RPSLSSessionService implements SessionService {
-	private MutateSession mutateSession;
+	private WorkflowDelegate<SessionContext> workflow;
+	private SessionContextFactory sessionContextFactory;
 
 	@Override
 	public List<Session> findAll() {
 		return SessionEntity.findAll().list().stream()
 				.map(baseEntity -> (SessionEntity) baseEntity)
-				.map(SessionEntity::fromEntity)
+				.map(SessionEntity::toSession)
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public void joinOrCreateSession(String playerUUID, String username) {
-		SessionEntity sessionEntity = SessionEntity.findOpenSession()
-				.orElseGet(() -> new SessionEntity(mutateSession.createSessionWithPlayer1(playerUUID, username)));
-
-		if (sessionEntity.getPlayer1().getUuid().equals(playerUUID) && sessionEntity.getPlayer1().getName().equals(username)) {
-			SessionEntity.persist(sessionEntity);
+		Optional<SessionEntity> sessionEntity = SessionEntity.findOpenSession();
+		if (sessionEntity.isPresent()) {
+			Session session = SessionEntity.toSession(sessionEntity.get());
+			var sessionContext = sessionContextFactory.makePlayer2JoinsSessionContext(session, playerUUID, username);
+			updateSessionState(sessionEntity.get(), sessionContext, 1);
 		} else {
-			Session session = SessionEntity.fromEntity(sessionEntity);
-			sessionEntity.merge(mutateSession.addPlayer2ToSession(session, playerUUID, username));
-			SessionEntity.update(sessionEntity);
+			var sessionContext = sessionContextFactory.makePlayer1JoinsSessionContext(playerUUID, username);
+			persistSessionState(sessionContext);
 		}
 	}
 
@@ -43,9 +47,24 @@ public class RPSLSSessionService implements SessionService {
 
 	}
 
-	private void cancelSession(SessionEntity session, String playerUUID, String username) {
-		session.merge(mutateSession.cancelSession(SessionEntity.fromEntity(session), playerUUID, username));
-		SessionEntity.update(session);
+	private void cancelSession(SessionEntity sessionEntity, String playerUUID, String username) {
+		if (isPlayer1(sessionEntity, playerUUID, username)) {
+			var sessionContext = sessionContextFactory.makePlayer1DisconnectsSessionContext(SessionEntity.toSession(sessionEntity));
+			updateSessionState(sessionEntity, sessionContext);
+		} else if (isPlayer2(sessionEntity, playerUUID, username)) {
+			var sessionContext = sessionContextFactory.makePlayer2DisconnectsSessionContext(SessionEntity.toSession(sessionEntity));
+			updateSessionState(sessionEntity, sessionContext);
+		}
+	}
+
+	private boolean isPlayer1(SessionEntity sessionEntity, String playerUUID, String username) {
+		SessionEntity.PlayerEntity player1 = sessionEntity.getPlayer1();
+		return playerUUID.equals(player1.getUuid()) && username.equals(player1.getName());
+	}
+
+	private boolean isPlayer2(SessionEntity sessionEntity, String playerUUID, String username) {
+		SessionEntity.PlayerEntity player2 = sessionEntity.getPlayer2();
+		return player2 != null && playerUUID.equals(player2.getUuid()) && username.equals(player2.getName());
 	}
 
 	@Override
@@ -54,14 +73,43 @@ public class RPSLSSessionService implements SessionService {
 				.ifPresent(session -> chooseMove(session, playerUUID, username, move));
 	}
 
-	private void chooseMove(SessionEntity session, String playerUUID, String username, Session.Move move) {
-		session.merge(mutateSession.addMove(SessionEntity.fromEntity(session), playerUUID, username, move));
-		session.merge(mutateSession.evaluateRound(SessionEntity.fromEntity(session)));
-		SessionEntity.update(session);
+	private void chooseMove(SessionEntity sessionEntity, String playerUUID, String username, Session.Move move) {
+		if (isPlayer1(sessionEntity, playerUUID, username)) {
+			var sessionContext = sessionContextFactory.makePlayer1ChoosesSessionContext(SessionEntity.toSession(sessionEntity), move);
+			updateSessionState(sessionEntity, sessionContext, 3);
+		} else if (isPlayer2(sessionEntity, playerUUID, username)) {
+			var sessionContext = sessionContextFactory.makePlayer2ChoosesSessionContext(SessionEntity.toSession(sessionEntity), move);
+			updateSessionState(sessionEntity, sessionContext, 3);
+		}
 	}
 
 	@Override
 	public void deleteAll() {
 		SessionEntity.deleteAll();
+		AuditLogEntity.deleteAll();
+	}
+
+	private void persistSessionState(SessionContext sessionContext) {
+		var sessionEntity = new SessionEntity(sessionContext);
+		workflow.apply(sessionContext);
+		sessionEntity.merge(sessionContext);
+		sessionEntity.persist();
+		sessionContext.setUserEvent(null);
+		sessionContext.setSystemEvent(null);
+	}
+
+	private void updateSessionState(SessionEntity sessionEntity, SessionContext sessionContext) {
+		workflow.apply(sessionContext);
+		sessionEntity.merge(sessionContext);
+		sessionEntity.update();
+	}
+
+	private void updateSessionState(SessionEntity sessionEntity, SessionContext sessionContext, int times) {
+		times = Math.max(times, 0);
+		for (int i = 0; i < times; i++) {
+			updateSessionState(sessionEntity, sessionContext);
+		}
+		sessionContext.setUserEvent(null);
+		sessionContext.setSystemEvent(null);
 	}
 }

@@ -1,9 +1,11 @@
 package nl.tsuriani.rpsls.infra.web.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nl.tsuriani.rpsls.domain.Session;
+import nl.tsuriani.rpsls.infra.db.SessionEntity;
 
 import java.util.UUID;
 
@@ -22,21 +24,24 @@ public class SessionDTO {
 		this.uuid = session.getUuid() == null ? null : session.getUuid().toString();
 		this.player1 = session.getPlayer1() == null ? null : new PlayerDTO(session.getPlayer1());
 		this.player2 = session.getPlayer2() == null ? null : new PlayerDTO(session.getPlayer2());
-		this.movePlayer1 = session.getMovePlayer1() == null ? null : session.getMovePlayer1().getName();
-		this.movePlayer2 = session.getMovePlayer2() == null ? null : session.getMovePlayer2().getName();
+		this.movePlayer1 = session.getMovePlayer1() == null ? null : session.getMovePlayer1().name();
+		this.movePlayer2 = session.getMovePlayer2() == null ? null : session.getMovePlayer2().name();
 		this.status = session.getStatus() == null ? null : session.getStatus().name();
 	}
 
-	public static Session fromDTO(SessionDTO sessionDTO) {
-		return new Session(sessionDTO.uuid == null ? null : UUID.fromString(sessionDTO.uuid),
-				sessionDTO.player1 == null ? null : PlayerDTO.player1FromDTO(sessionDTO.player1),
-				sessionDTO.player2 == null ? null : PlayerDTO.player2FromDTO(sessionDTO.player2),
-				sessionDTO.movePlayer1 == null ? null : new Session.MovePlayer1(sessionDTO.movePlayer1.toUpperCase().trim()),
-				sessionDTO.movePlayer2 == null ? null : new Session.MovePlayer2(sessionDTO.movePlayer2.toUpperCase().trim()),
-				sessionDTO.status == null ? null : Session.Status.valueOf(sessionDTO.status.toUpperCase().trim()));
+	public static Session toSession(SessionDTO sessionDTO) {
+		return Session.builder()
+				.uuid(sessionDTO.uuid == null ? null : UUID.fromString(sessionDTO.uuid))
+				.player1(sessionDTO.player1 == null ? null : PlayerDTO.player1FromDTO(sessionDTO.player1))
+				.player2(sessionDTO.player2 == null ? null : PlayerDTO.player2FromDTO(sessionDTO.player2))
+				.movePlayer1(sessionDTO.movePlayer1 == null ? null : Session.Move.valueOf(sessionDTO.movePlayer1.toUpperCase().trim()))
+				.movePlayer1(sessionDTO.movePlayer2 == null ? null : Session.Move.valueOf(sessionDTO.movePlayer1.toUpperCase().trim()))
+				.build();
 	}
 
 	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	@Data
 	public static class PlayerDTO {
 		private String uuid;

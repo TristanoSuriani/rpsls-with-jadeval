@@ -1,0 +1,10 @@
+package nl.tsuriani.rpsls.domain;
+
+public enum UserEvent {
+	PLAYER1_JOINS,
+	PLAYER2_JOINS,
+	PLAYER1_CHOOSES,
+	PLAYER2_CHOOSES,
+	PLAYER1_DISCONNECTS,
+	PLAYER2_DISCONNECTS
+}

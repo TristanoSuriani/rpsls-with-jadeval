@@ -66,6 +66,13 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-openapi</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>nl.suriani</groupId>
+      <artifactId>jadeval</artifactId>
+      <version>0.4.6</version>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>

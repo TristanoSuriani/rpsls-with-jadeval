@@ -1,5 +1,6 @@
 package nl.tsuriani.rpsls.infra.db;
 
+import nl.tsuriani.rpsls.applicationservices.context.SessionContextFactory;
 import nl.tsuriani.rpsls.domain.Session;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,9 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class SessionEntityTest {
 	@Test
 	void testEmptyValuesShouldNotRaiseNullPointers() {
-		Session session1 = new Session(null, null, null, null, null, null);
-		SessionEntity sessionEntity = new SessionEntity(session1);
-		Session session2 = SessionEntity.fromEntity(sessionEntity);
+		Session session1 = Session.builder().build();
+		var sessionContext = new SessionContextFactory().makeSessionContextWithoutInput(session1);
+		SessionEntity sessionEntity = new SessionEntity(sessionContext);
+		Session session2 = SessionEntity.toSession(sessionEntity);
 
 		Assertions.assertAll(() -> {
 			assertNotNull(sessionEntity);
