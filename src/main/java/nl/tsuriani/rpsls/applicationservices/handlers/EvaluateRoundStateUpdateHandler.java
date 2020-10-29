@@ -47,6 +47,7 @@ public class EvaluateRoundStateUpdateHandler extends RPSLSStateUpdateHandler {
 							sessionContext.setPlayer1Score(sessionContext.getSession().getPlayer1().getScore());
 							sessionContext.setPlayer2Score(sessionContext.getSession().getPlayer2().getScore());
 							sessionContext.setSystemEvent(SystemEvent.NOBODY_SCORES);
+							break;
 					}
 				});
 	}

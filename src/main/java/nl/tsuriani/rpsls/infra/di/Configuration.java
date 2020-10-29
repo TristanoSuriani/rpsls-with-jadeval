@@ -13,10 +13,7 @@ import nl.tsuriani.rpsls.applicationservices.context.RoundContext;
 import nl.tsuriani.rpsls.applicationservices.context.SessionContext;
 import nl.tsuriani.rpsls.applicationservices.context.SessionContextFactory;
 import nl.tsuriani.rpsls.applicationservices.handlers.AuditTransitionAttempted;
-import nl.tsuriani.rpsls.applicationservices.handlers.BothPlayerJoinedStateUpdateHandler;
 import nl.tsuriani.rpsls.applicationservices.handlers.EvaluateRoundStateUpdateHandler;
-import nl.tsuriani.rpsls.applicationservices.handlers.Player1HasScoredStateUpdateHandler;
-import nl.tsuriani.rpsls.applicationservices.handlers.Player2HasScoredStateUpdateHandler;
 import nl.tsuriani.rpsls.domainservices.SessionService;
 import nl.tsuriani.rpsls.infra.facade.SessionFacade;
 
@@ -68,10 +65,7 @@ public class Configuration {
 		return new WorkflowOptionsBuilder<SessionContext>()
 				.withExecutionType(WorkflowExecutionType.UNTIL_PAUSE)
 				.withTransitionAttemptedEventHandler(auditTransitionAttempted())
-				.withStateUpdateEventHandler(new BothPlayerJoinedStateUpdateHandler())
 				.withStateUpdateEventHandler(new EvaluateRoundStateUpdateHandler(decisions()))
-				.withStateUpdateEventHandler(new Player1HasScoredStateUpdateHandler())
-				.withStateUpdateEventHandler(new Player2HasScoredStateUpdateHandler())
 				.build();
 	}
 }
