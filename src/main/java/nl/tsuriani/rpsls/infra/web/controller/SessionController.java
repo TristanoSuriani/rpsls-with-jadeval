@@ -37,8 +37,8 @@ public class SessionController {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void registerPlayerToSession(SessionDTO.PlayerDTO player) {
-		sessionFacade.registerPlayer(player); // register
+	public SessionDTO registerPlayerToSession(SessionDTO.PlayerDTO player) {
+		return sessionFacade.registerPlayer(player); // register
 	}
 
 	@DELETE

@@ -55,19 +55,10 @@ public class SessionEntity extends PanacheMongoEntity {
 		return Optional.ofNullable(find("status", Session.Status.waitingForPlayer2ToJoin).firstResult());
 	}
 
-	public static Optional<SessionEntity> findByUUID(String uuid){
-		return Optional.ofNullable(find("uuid", uuid).firstResult());
-	}
-
-	public static Optional<SessionEntity> findByPlayerUUIDAndName(String uuid, String name){
+	public static Optional<SessionEntity> findByUUID(String uuid) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("uuid", uuid);
-		params.put("name", name);
-
-		SessionEntity result =  SessionEntity.find("player1.uuid = :uuid and player1.name = :name or " +
-					"player2.uuid = :uuid and player2.name = :name", params).firstResult();
-
-		return Optional.ofNullable(result);
+		return Optional.ofNullable(find("uuid = :uuid", params).firstResult());
 	}
 
 	@AllArgsConstructor

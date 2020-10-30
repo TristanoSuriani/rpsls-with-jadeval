@@ -29,15 +29,17 @@ public class RPSLSSessionService implements SessionService {
 	}
 
 	@Override
-	public void joinOrCreateSession(String playerUUID, String username) {
+	public SessionContext joinOrCreateSession(String playerUUID, String username) {
 		Optional<SessionEntity> sessionEntity = SessionEntity.findOpenSession();
 		if (sessionEntity.isPresent()) {
 			Session session = SessionEntity.toSession(sessionEntity.get());
 			var sessionContext = sessionContextFactory.makePlayer2JoinsSessionContext(session, playerUUID, username);
 			updateSessionState(sessionEntity.get(), sessionContext, 1);
+			return sessionContext;
 		} else {
 			var sessionContext = sessionContextFactory.makePlayer1JoinsSessionContext(playerUUID, username);
 			persistSessionState(sessionContext);
+			return sessionContext;
 		}
 	}
 

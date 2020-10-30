@@ -19,8 +19,8 @@ public final class SessionFacade {
 				.collect(Collectors.toList());
 	}
 
-	public void registerPlayer(SessionDTO.PlayerDTO player) {
-		sessionService.joinOrCreateSession(player.getUuid(), player.getName());
+	public SessionDTO registerPlayer(SessionDTO.PlayerDTO player) {
+		return new SessionDTO(sessionService.joinOrCreateSession(player.getUuid(), player.getName()).getSession());
 	}
 
 	public void deleteAll() {

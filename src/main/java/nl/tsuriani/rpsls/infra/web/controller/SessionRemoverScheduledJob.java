@@ -22,7 +22,7 @@ public class SessionRemoverScheduledJob {
 
 	}
 
-	@Scheduled(every = "1m")
+	@Scheduled(every = "15s")
 	public void removeTerminatedSessions() {
 		SessionEntity.findAll().list().stream()
 				.map(sessionEntity -> (SessionEntity) sessionEntity)

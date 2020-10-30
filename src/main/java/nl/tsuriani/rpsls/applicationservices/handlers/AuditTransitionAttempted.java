@@ -13,15 +13,6 @@ public class AuditTransitionAttempted implements TransitionAttemptedEventHandler
 
 	@Override
 	public void handle(SessionContext context) {
-		if(context.getSession().getUuid() != null) {
-			SessionEntity.findByUUID(context.getSession().getUuid().toString())
-					.ifPresent(session -> {
-						session.merge(context);
-						session.persistOrUpdate();
-					});
-		} else {
-			new SessionEntity(context).persist();
-		}
 		var systemEvent = context.getSystemEvent() == null ? null : context.getSystemEvent().name();
 		var userEvent = context.getUserEvent() == null ? null : context.getUserEvent().name();
 		var movePlayer1 = context.getSession().getMovePlayer1() == null ? null : context.getSession().getMovePlayer1().name();
