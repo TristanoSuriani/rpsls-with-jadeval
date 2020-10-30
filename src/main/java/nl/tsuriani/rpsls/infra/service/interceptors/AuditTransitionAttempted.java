@@ -1,10 +1,9 @@
-package nl.tsuriani.rpsls.applicationservices.handlers;
+package nl.tsuriani.rpsls.infra.service.interceptors;
 
 import lombok.extern.java.Log;
 import nl.suriani.jadeval.execution.shared.TransitionAttemptedEventHandler;
-import nl.tsuriani.rpsls.applicationservices.context.SessionContext;
+import nl.tsuriani.rpsls.infra.service.context.SessionContext;
 import nl.tsuriani.rpsls.infra.db.AuditLogEntity;
-import nl.tsuriani.rpsls.infra.db.SessionEntity;
 
 import java.time.LocalDateTime;
 

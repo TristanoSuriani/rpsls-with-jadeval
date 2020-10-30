@@ -3,7 +3,7 @@ package nl.tsuriani.rpsls.infra.web.controller;
 import lombok.AllArgsConstructor;
 import nl.tsuriani.rpsls.domain.Session;
 import nl.tsuriani.rpsls.infra.db.AuditLogEntity;
-import nl.tsuriani.rpsls.infra.facade.SessionFacade;
+import nl.tsuriani.rpsls.infra.service.SessionFacade;
 import nl.tsuriani.rpsls.infra.web.dto.ChoiceDTO;
 import nl.tsuriani.rpsls.infra.web.dto.SessionDTO;
 

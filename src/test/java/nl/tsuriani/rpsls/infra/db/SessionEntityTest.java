@@ -1,6 +1,6 @@
 package nl.tsuriani.rpsls.infra.db;
 
-import nl.tsuriani.rpsls.applicationservices.context.SessionContextFactory;
+import nl.tsuriani.rpsls.infra.service.context.SessionContextFactory;
 import nl.tsuriani.rpsls.domain.Session;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

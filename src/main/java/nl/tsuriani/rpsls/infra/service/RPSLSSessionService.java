@@ -1,11 +1,10 @@
-package nl.tsuriani.rpsls.applicationservices;
+package nl.tsuriani.rpsls.infra.service;
 
 import lombok.AllArgsConstructor;
 import nl.suriani.jadeval.execution.workflow.WorkflowDelegate;
-import nl.tsuriani.rpsls.applicationservices.context.SessionContext;
-import nl.tsuriani.rpsls.applicationservices.context.SessionContextFactory;
+import nl.tsuriani.rpsls.infra.service.context.SessionContext;
+import nl.tsuriani.rpsls.infra.service.context.SessionContextFactory;
 import nl.tsuriani.rpsls.domain.Session;
-import nl.tsuriani.rpsls.domainservices.SessionService;
 import nl.tsuriani.rpsls.infra.db.AuditLogEntity;
 import nl.tsuriani.rpsls.infra.db.SessionEntity;
 

@@ -1,6 +1,6 @@
-package nl.tsuriani.rpsls.domainservices;
+package nl.tsuriani.rpsls.infra.service;
 
-import nl.tsuriani.rpsls.applicationservices.context.SessionContext;
+import nl.tsuriani.rpsls.infra.service.context.SessionContext;
 import nl.tsuriani.rpsls.domain.Session;
 
 import java.util.List;

@@ -1,8 +1,7 @@
-package nl.tsuriani.rpsls.infra.facade;
+package nl.tsuriani.rpsls.infra.service;
 
 import lombok.AllArgsConstructor;
 import nl.tsuriani.rpsls.domain.Session;
-import nl.tsuriani.rpsls.domainservices.SessionService;
 import nl.tsuriani.rpsls.infra.web.dto.ChoiceDTO;
 import nl.tsuriani.rpsls.infra.web.dto.SessionDTO;
 

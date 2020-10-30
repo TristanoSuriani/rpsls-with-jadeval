@@ -1,9 +1,9 @@
-package nl.tsuriani.rpsls.applicationservices.handlers;
+package nl.tsuriani.rpsls.infra.service.interceptors;
 
 import nl.suriani.jadeval.execution.decision.DecisionsDelegate;
-import nl.tsuriani.rpsls.applicationservices.context.RoundContext;
-import nl.tsuriani.rpsls.applicationservices.RoundResult;
-import nl.tsuriani.rpsls.applicationservices.context.SessionContext;
+import nl.tsuriani.rpsls.infra.service.context.RoundContext;
+import nl.tsuriani.rpsls.infra.service.RoundResult;
+import nl.tsuriani.rpsls.infra.service.context.SessionContext;
 import nl.tsuriani.rpsls.domain.Session;
 import nl.tsuriani.rpsls.domain.SystemEvent;
 

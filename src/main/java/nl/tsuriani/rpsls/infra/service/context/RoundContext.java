@@ -1,4 +1,4 @@
-package nl.tsuriani.rpsls.applicationservices.context;
+package nl.tsuriani.rpsls.infra.service.context;
 
 import lombok.Builder;
 import nl.suriani.jadeval.annotation.Fact;

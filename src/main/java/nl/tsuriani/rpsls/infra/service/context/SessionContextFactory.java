@@ -1,4 +1,4 @@
-package nl.tsuriani.rpsls.applicationservices.context;
+package nl.tsuriani.rpsls.infra.service.context;
 
 import nl.tsuriani.rpsls.domain.Session;
 import nl.tsuriani.rpsls.domain.UserEvent;

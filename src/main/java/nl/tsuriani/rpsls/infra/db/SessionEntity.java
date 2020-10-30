@@ -5,7 +5,7 @@ import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nl.tsuriani.rpsls.applicationservices.context.SessionContext;
+import nl.tsuriani.rpsls.infra.service.context.SessionContext;
 import nl.tsuriani.rpsls.domain.Session;
 
 import java.util.HashMap;
