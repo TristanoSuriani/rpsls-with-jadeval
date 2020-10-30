@@ -13,7 +13,7 @@ import nl.tsuriani.rpsls.applicationservices.context.RoundContext;
 import nl.tsuriani.rpsls.applicationservices.context.SessionContext;
 import nl.tsuriani.rpsls.applicationservices.context.SessionContextFactory;
 import nl.tsuriani.rpsls.applicationservices.handlers.AuditTransitionAttempted;
-import nl.tsuriani.rpsls.applicationservices.handlers.EvaluateRoundStateUpdateHandler;
+import nl.tsuriani.rpsls.applicationservices.handlers.EvaluateRoundOnStateUpdateTransformer;
 import nl.tsuriani.rpsls.domainservices.SessionService;
 import nl.tsuriani.rpsls.infra.facade.SessionFacade;
 
@@ -65,7 +65,7 @@ public class Configuration {
 		return new WorkflowOptionsBuilder<SessionContext>()
 				.withExecutionType(WorkflowExecutionType.UNTIL_PAUSE)
 				.withTransitionAttemptedEventHandler(auditTransitionAttempted())
-				.withStateUpdateEventHandler(new EvaluateRoundStateUpdateHandler(decisions()))
+				.withOnStateUpdateContextTransformer(new EvaluateRoundOnStateUpdateTransformer(decisions()))
 				.build();
 	}
 }

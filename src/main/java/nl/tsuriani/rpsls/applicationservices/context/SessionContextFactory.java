@@ -1,7 +1,6 @@
 package nl.tsuriani.rpsls.applicationservices.context;
 
 import nl.tsuriani.rpsls.domain.Session;
-import nl.tsuriani.rpsls.domain.SystemEvent;
 import nl.tsuriani.rpsls.domain.UserEvent;
 
 import java.util.UUID;
@@ -41,6 +40,8 @@ public class SessionContextFactory {
 						.build())
 				.status(session.getStatus())
 				.userEvent(UserEvent.PLAYER1_CHOOSES)
+				.player1Score(session.getPlayer1().getScore())
+				.player2Score(session.getPlayer2().getScore())
 				.build();
 	}
 
@@ -55,34 +56,8 @@ public class SessionContextFactory {
 						.build())
 				.status(session.getStatus())
 				.userEvent(UserEvent.PLAYER2_CHOOSES)
-				.build();
-	}
-
-	public SessionContext makePlayer1ScoresSessionContext(Session session) {
-		return SessionContext.builder()
-				.session(session)
-				.status(session.getStatus())
 				.player1Score(session.getPlayer1().getScore())
 				.player2Score(session.getPlayer2().getScore())
-				.systemEvent(SystemEvent.PLAYER1_SCORES)
-				.build();
-	}
-
-	public SessionContext makePlayer2ScoresSessionContext(Session session) {
-		return SessionContext.builder()
-				.session(session)
-				.status(session.getStatus())
-				.player1Score(session.getPlayer1().getScore())
-				.player2Score(session.getPlayer2().getScore())
-				.systemEvent(SystemEvent.PLAYER2_SCORES)
-				.build();
-	}
-
-	public SessionContext makeNobodyScoresSessionContext(Session session) {
-		return SessionContext.builder()
-				.session(session)
-				.status(session.getStatus())
-				.systemEvent(SystemEvent.NOBODY_SCORES)
 				.build();
 	}
 
@@ -91,6 +66,8 @@ public class SessionContextFactory {
 				.session(session)
 				.status(session.getStatus())
 				.userEvent(UserEvent.PLAYER1_DISCONNECTS)
+				.player1Score(session.getPlayer1().getScore())
+				.player2Score(session.getPlayer2().getScore())
 				.build();
 	}
 
@@ -99,6 +76,8 @@ public class SessionContextFactory {
 				.session(session)
 				.status(session.getStatus())
 				.userEvent(UserEvent.PLAYER2_DISCONNECTS)
+				.player1Score(session.getPlayer1().getScore())
+				.player2Score(session.getPlayer2().getScore())
 				.build();
 	}
 

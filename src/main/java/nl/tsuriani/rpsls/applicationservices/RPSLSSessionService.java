@@ -12,6 +12,7 @@ import nl.tsuriani.rpsls.infra.db.SessionEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @AllArgsConstructor
@@ -89,27 +90,27 @@ public class RPSLSSessionService implements SessionService {
 		AuditLogEntity.deleteAll();
 	}
 
-	private void persistSessionState(SessionContext sessionContext) {
+	private SessionContext persistSessionState(SessionContext sessionContext) {
+		var currentContext = sessionContext;
 		var sessionEntity = new SessionEntity(sessionContext);
-		workflow.apply(sessionContext);
+		sessionContext = workflow.apply(sessionContext);
 		sessionEntity.merge(sessionContext);
 		sessionEntity.persist();
-		sessionContext.setUserEvent(null);
-		sessionContext.setSystemEvent(null);
+		return currentContext;
 	}
 
-	private void updateSessionState(SessionEntity sessionEntity, SessionContext sessionContext) {
-		workflow.apply(sessionContext);
+	private SessionContext updateSessionState(SessionEntity sessionEntity, SessionContext sessionContext) {
+		var currentContext = workflow.apply(sessionContext);
 		sessionEntity.merge(sessionContext);
 		sessionEntity.update();
+		return currentContext;
 	}
 
-	private void updateSessionState(SessionEntity sessionEntity, SessionContext sessionContext, int times) {
-		times = Math.max(times, 0);
-		for (int i = 0; i < times; i++) {
-			updateSessionState(sessionEntity, sessionContext);
-		}
-		sessionContext.setUserEvent(null);
-		sessionContext.setSystemEvent(null);
+	private SessionContext updateSessionState(SessionEntity sessionEntity, SessionContext sessionContext, int times) {
+		return Stream.iterate(0, (i) -> i + 1)
+				.limit(Math.max(times, 0))
+				.map(i -> sessionContext)
+				.reduce(sessionContext,
+						(previous, next) -> updateSessionState(sessionEntity, previous));
 	}
 }
