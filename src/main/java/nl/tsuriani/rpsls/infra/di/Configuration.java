@@ -18,6 +18,7 @@ import nl.tsuriani.rpsls.infra.service.SessionService;
 import nl.tsuriani.rpsls.infra.service.SessionFacade;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.io.File;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -54,11 +55,13 @@ public class Configuration {
 	}
 
 	private JadevalModel getWorkflowModel() {
-		return new JadevalLoader().load(this.getClass().getClassLoader().getResourceAsStream("game_workflow.jwl"));
+		var source = new File("../src/main/jadeval/nl/tsuriani/rpsls/domain/game_workflow.jwl");
+		return new JadevalLoader().load(source);
 	}
 
 	private JadevalModel getDecisionsModel() {
-		return new JadevalLoader().load(this.getClass().getClassLoader().getResourceAsStream("round_rules.jdl"));
+		var source = new File("../src/main/jadeval/nl/tsuriani/rpsls/domain/round_rules.jdl");
+		return new JadevalLoader().load(source);
 	}
 
 	private WorkflowOptions<SessionContext> getWorkflowOptions() {
