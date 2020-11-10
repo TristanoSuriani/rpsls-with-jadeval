@@ -1,5 +1,4 @@
 constants
-    $maximum_score = 3
     $available_moves = [ROCK, PAPER, SCISSORS, LIZARD, SPOCK]
 
 validations

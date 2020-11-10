@@ -1,0 +1,19 @@
+workflow
+    root states
+        nobodyHasChosen
+
+    intermediate states
+        player1HasChosen, player2HasChosen, bothPlayersHaveChosen
+
+    final states
+        player1HasScored, player2HasScored, nobodyHasScored
+
+    transitions
+        nobodyHasChosen -> player1HasChosen when roundEvent is PLAYER1_CHOOSES
+        nobodyHasChosen -> player2HasChosen when roundEvent is PLAYER2_CHOOSES
+        player1HasChosen -> bothPlayersHaveChosen when roundEvent is PLAYER2_CHOOSES
+        player2HasChosen -> bothPlayersHaveChosen when roundEvent is PLAYER1_CHOOSES
+
+        bothPlayersHaveChosen -> player1HasScored when roundEvent is PLAYER1_SCORES
+        bothPlayersHaveChosen -> player2HasScored when roundEvent is PLAYER2_SCORES
+        bothPlayersHaveChosen -> nobodyHasScored when roundEvent is NOBODY_SCORES

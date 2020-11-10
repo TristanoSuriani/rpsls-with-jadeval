@@ -1,0 +1,16 @@
+workflow
+    root states
+        newSession
+
+    intermediate states
+        player1HasJoined, player2HasJoined
+
+    final states
+        sessionTerminated, sessionCancelled
+
+    transitions
+        newSession -> player1HasJoined when userAction is JOIN
+        player1HasJoined -> player2HasJoined when userAction is JOIN
+
+        { player1HasJoined, player2HasJoined } -> sessionCancelled when userAction is DISCONNECT
+        { player1HasJoined, player2HasJoined } -> sessionTerminated when gameEvent is in [ PLAYER1_WINS, PLAYER2_WINS ]

@@ -1,0 +1,16 @@
+decisions
+    constants
+        $winningScore = 3
+
+    rules
+        "If both players didn't reach the winning score, the game continues with a new round"
+        when player1Score < $winningScore and player2Score < $winningScore
+            then NEW_ROUND
+
+        "If player1 reached the winning score, player1 wins the game"
+        when player1Score >= $winningScore
+            then PLAYER1_WINS
+
+        "If player2 reached the winning score, player2 wins the game"
+        when  player2Score >= $winningScore
+            then PLAYER2_WINS
