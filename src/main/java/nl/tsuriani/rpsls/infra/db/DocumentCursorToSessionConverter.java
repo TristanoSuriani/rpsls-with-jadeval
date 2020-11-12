@@ -54,7 +54,7 @@ public class DocumentCursorToSessionConverter {
 
 	private Player documentToPlayer1(Document document) {
 		return Player.builder()
-				.playerIdentity(PlayerIdentity.builder()
+				.identity(PlayerIdentity.builder()
 						.clientUUID(getUUIDField(document, CLIENT_UUID_PLAYER1).orElse(null))
 						.username(getStringField(document, USERNAME_PLAYER1).orElse(null))
 						.build())
@@ -67,7 +67,7 @@ public class DocumentCursorToSessionConverter {
 			return null;
 		}
 		return Player.builder()
-				.playerIdentity(PlayerIdentity.builder()
+				.identity(PlayerIdentity.builder()
 						.clientUUID(getUUIDField(document, CLIENT_UUID_PLAYER2).orElse(null))
 						.username(getStringField(document, USERNAME_PLAYER2).orElse(null))
 						.build())
@@ -80,10 +80,10 @@ public class DocumentCursorToSessionConverter {
 			return null;
 		}
 		return Round.builder()
-				.movePlayer1(getStringField(document, MOVE_PLAYER1)
+				.player1Move(getStringField(document, MOVE_PLAYER1)
 					.map(Move::valueOf)
 					.orElse(null))
-				.movePlayer2(getStringField(document, MOVE_PLAYER2)
+				.player2Move(getStringField(document, MOVE_PLAYER2)
 						.map(Move::valueOf)
 						.orElse(null))
 				.state(getStringField(document, ROUND_STATE)

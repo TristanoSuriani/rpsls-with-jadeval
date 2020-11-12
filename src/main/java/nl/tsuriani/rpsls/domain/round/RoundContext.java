@@ -1,21 +1,23 @@
 package nl.tsuriani.rpsls.domain.round;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import nl.suriani.jadeval.annotation.Fact;
 import nl.suriani.jadeval.annotation.State;
 
 @Builder
-@Getter
+@Data
+@Accessors(fluent = true)
 public class RoundContext {
 	@State
 	private RoundState state;
 
 	@Fact
-	private Move movePlayer1;
+	private Move player1Move;
 
 	@Fact
-	private Move movePlayer2;
+	private Move player2Move;
 
 	@Fact
 	private int player1Score;

@@ -1,5 +1,6 @@
 package nl.tsuriani.rpsls.infra.web.controller;
 
+import nl.tsuriani.rpsls.domain.round.Move;
 import nl.tsuriani.rpsls.infra.web.dto.SessionDTO;
 import org.dizitart.no2.NitriteCollection;
 import org.dizitart.no2.filters.Filters;
@@ -21,7 +22,7 @@ public class TestController {
 	@Inject
 	NitriteCollection sessions;
 
-	@Path("happyFlow1")
+	@Path("happyflow1")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
@@ -31,9 +32,39 @@ public class TestController {
 
 		sessions.remove(Filters.ALL);
 		sessionFacade.getAll();
-		sessionFacade.registerPlayer(player1.getUuid(), player1.getName());
+		var sessionUUID = sessionFacade.registerPlayer(player1.getUuid(), player1.getName());
 		sessionFacade.getAll();
 		sessionFacade.registerPlayer(player2.getUuid(), player2.getName());
+		sessionFacade.chooseMove(sessionUUID, player1.getUuid(), player1.getName(), Move.ROCK);
+		sessionFacade.chooseMove(sessionUUID, player2.getUuid(), player2.getName(), Move.SCISSORS);
+		sessionFacade.chooseMove(sessionUUID, player1.getUuid(), player1.getName(), Move.ROCK);
+		sessionFacade.chooseMove(sessionUUID, player2.getUuid(), player2.getName(), Move.SCISSORS);
+		sessionFacade.chooseMove(sessionUUID, player1.getUuid(), player1.getName(), Move.ROCK);
+		sessionFacade.chooseMove(sessionUUID, player2.getUuid(), player2.getName(), Move.SCISSORS);
+		sessionFacade.disconnect(sessionUUID);
+		return sessionFacade.getAll();
+	}
+
+	@Path("happyflow2")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@GET
+	public List<SessionDTO> happyFlow2() {
+		SessionDTO.PlayerDTO player1 = new SessionDTO.PlayerDTO(UUID.randomUUID().toString(), "Frank", 0);
+		SessionDTO.PlayerDTO player2 = new SessionDTO.PlayerDTO(UUID.randomUUID().toString(), "Harco", 0);
+
+		sessions.remove(Filters.ALL);
+		sessionFacade.getAll();
+		var sessionUUID = sessionFacade.registerPlayer(player1.getUuid(), player1.getName());
+		sessionFacade.getAll();
+		sessionFacade.registerPlayer(player2.getUuid(), player2.getName());
+		sessionFacade.chooseMove(sessionUUID, player1.getUuid(), player1.getName(), Move.ROCK);
+		sessionFacade.chooseMove(sessionUUID, player2.getUuid(), player2.getName(), Move.SPOCK);
+		sessionFacade.chooseMove(sessionUUID, player1.getUuid(), player1.getName(), Move.ROCK);
+		sessionFacade.chooseMove(sessionUUID, player2.getUuid(), player2.getName(), Move.SPOCK);
+		sessionFacade.chooseMove(sessionUUID, player1.getUuid(), player1.getName(), Move.ROCK);
+		sessionFacade.chooseMove(sessionUUID, player2.getUuid(), player2.getName(), Move.SPOCK);
+		sessionFacade.disconnect(sessionUUID);
 		return sessionFacade.getAll();
 	}
 }

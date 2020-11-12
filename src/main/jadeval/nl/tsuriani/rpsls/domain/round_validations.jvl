@@ -1,9 +1,11 @@
-constants
-    $available_moves = [ROCK, PAPER, SCISSORS, LIZARD, SPOCK]
-
 validations
-    valid when player1Score >=0
-        and player2Score >= 0
 
-    valid when player1Move is in $available_moves
-        and player2Move is in $available_moves
+    constants
+        $available_moves = [ROCK, PAPER, SCISSORS, LIZARD, SPOCK]
+
+    rules
+        valid when player1Score >=0
+            and player2Score >= 0
+
+        valid when player1Move is in $available_moves
+            and player2Move is in $available_moves

@@ -8,5 +8,5 @@ import nl.tsuriani.rpsls.domain.session.SessionContext;
 @AllArgsConstructor
 @Getter
 public class SessionWorkflow {
-	private WorkflowDelegate<SessionContext> decisionsDelegate;
+	private WorkflowDelegate<SessionContext> workflowDelegate;
 }

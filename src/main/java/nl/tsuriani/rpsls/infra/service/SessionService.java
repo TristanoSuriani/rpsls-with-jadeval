@@ -10,9 +10,7 @@ public interface SessionService {
 
 	Session joinOrCreateSession(String playerUUID, String username);
 
-	void cancelSession(String uuid, String playerUUID, String username);
+	void cancelSession(String sessionUUID);
 
 	void chooseMove(String uuid, String playerUUID, String username, Move move);
-
-	void deleteAll();
 }

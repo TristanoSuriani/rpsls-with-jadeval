@@ -8,5 +8,5 @@ import nl.tsuriani.rpsls.domain.round.RoundContext;
 @AllArgsConstructor
 @Getter
 public class RoundWorkflow {
-	private WorkflowDelegate<RoundContext> decisionsDelegate;
+	private WorkflowDelegate<RoundContext> workflowDelegate;
 }

@@ -18,16 +18,16 @@ public class Configuration {
 	private static final String POST_ROUND_DECISIONS_SOURCE_PATH = JADEVAL_SOURCES_PATH + "post_round_decisions.jdl";
 
 	@Singleton
-	public RoundWorkflow sessionWorkflow() {
-		var model = new JadevalLoader().load(new File(SESSION_WORKFLOW_SOURCE_PATH));
+	public RoundWorkflow roundWorkflow() {
+		var model = new JadevalLoader().load(new File(ROUND_WORKFLOW_SOURCE_PATH));
 		return new RoundWorkflow(new JadevalExecutor(model)
 				.workflow(new WorkflowOptionsBuilder()
 						.build()));
 	}
 
 	@Singleton
-	public SessionWorkflow roundWorkflow() {
-		var model = new JadevalLoader().load(new File(ROUND_WORKFLOW_SOURCE_PATH));
+	public SessionWorkflow sessionWorkflow() {
+		var model = new JadevalLoader().load(new File(SESSION_WORKFLOW_SOURCE_PATH));
 		return new SessionWorkflow(new JadevalExecutor(model)
 				.workflow(new WorkflowOptionsBuilder()
 					.build()));

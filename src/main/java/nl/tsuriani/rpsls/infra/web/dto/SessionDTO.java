@@ -57,14 +57,14 @@ public class SessionDTO {
 		private int score = 0;
 
 		public PlayerDTO(Player player) {
-			this.uuid = player.getPlayerIdentity().getClientUUID().toString();
-			this.name = player.getPlayerIdentity().getUsername();
+			this.uuid = player.getIdentity().getClientUUID().toString();
+			this.name = player.getIdentity().getUsername();
 			this.score = player.getScore();
 		}
 
 		public Player toPlayer() {
 			return Player.builder()
-					.playerIdentity(PlayerIdentity.builder()
+					.identity(PlayerIdentity.builder()
 							.clientUUID(UUID.fromString(uuid))
 							.username(name)
 							.build())

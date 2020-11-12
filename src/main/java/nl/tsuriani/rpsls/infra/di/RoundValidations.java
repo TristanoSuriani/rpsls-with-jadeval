@@ -8,5 +8,5 @@ import nl.tsuriani.rpsls.domain.round.RoundContext;
 @AllArgsConstructor
 @Getter
 public class RoundValidations {
-	private ValidationsDelegate<RoundContext> decisionsDelegate;
+	private ValidationsDelegate<RoundContext> validationsDelegate;
 }

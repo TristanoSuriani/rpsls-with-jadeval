@@ -5,41 +5,41 @@
 decisions
 
     // DRAW
-    when movePlayer1 is ROCK and movePlayer2 is ROCK then DRAW
-    when movePlayer1 is PAPER and movePlayer2 is PAPER then DRAW
-    when movePlayer1 is SCISSORS and movePlayer2 is SCISSORS then DRAW
-    when movePlayer1 is LIZARD and movePlayer2 is LIZARD then DRAW
-    when movePlayer1 is SPOCK and movePlayer2 is SPOCK then DRAW
+    when player1Move is ROCK and player2Move is ROCK then DRAW
+    when player1Move is PAPER and player2Move is PAPER then DRAW
+    when player1Move is SCISSORS and player2Move is SCISSORS then DRAW
+    when player1Move is LIZARD and player2Move is LIZARD then DRAW
+    when player1Move is SPOCK and player2Move is SPOCK then DRAW
 
-    // PLAYER1_WINS
-    when movePlayer1 is ROCK and movePlayer2 is SCISSORS then PLAYER1_WINS
-    when movePlayer1 is ROCK and movePlayer2 is LIZARD then PLAYER1_WINS
+    // PLAYER1_SCORES
+    when player1Move is ROCK and player2Move is SCISSORS then PLAYER1_SCORES
+    when player1Move is ROCK and player2Move is LIZARD then PLAYER1_SCORES
     
-    when movePlayer1 is PAPER and movePlayer2 is ROCK then PLAYER1_WINS
-    when movePlayer1 is PAPER and movePlayer2 is SPOCK then PLAYER1_WINS
+    when player1Move is PAPER and player2Move is ROCK then PLAYER1_SCORES
+    when player1Move is PAPER and player2Move is SPOCK then PLAYER1_SCORES
         
-    when movePlayer1 is SCISSORS and movePlayer2 is PAPER then PLAYER1_WINS
-    when movePlayer1 is SCISSORS and movePlayer2 is LIZARD then PLAYER1_WINS
+    when player1Move is SCISSORS and player2Move is PAPER then PLAYER1_SCORES
+    when player1Move is SCISSORS and player2Move is LIZARD then PLAYER1_SCORES
     
-    when movePlayer1 is LIZARD and movePlayer2 is PAPER then PLAYER1_WINS
-    when movePlayer1 is LIZARD and movePlayer2 is SPOCK then PLAYER1_WINS
+    when player1Move is LIZARD and player2Move is PAPER then PLAYER1_SCORES
+    when player1Move is LIZARD and player2Move is SPOCK then PLAYER1_SCORES
     
-    when movePlayer1 is SPOCK and movePlayer2 is ROCK then PLAYER1_WINS
-    when movePlayer1 is SPOCK and movePlayer2 is SCISSORS then PLAYER1_WINS
+    when player1Move is SPOCK and player2Move is ROCK then PLAYER1_SCORES
+    when player1Move is SPOCK and player2Move is SCISSORS then PLAYER1_SCORES
 
-    // PLAYER2_WINS
-    when movePlayer2 is ROCK and movePlayer1 is SCISSORS then PLAYER2_WINS
-    when movePlayer2 is ROCK and movePlayer1 is LIZARD then PLAYER2_WINS
+    // PLAYER2_SCORES
+    when player2Move is ROCK and player1Move is SCISSORS then PLAYER2_SCORES
+    when player2Move is ROCK and player1Move is LIZARD then PLAYER2_SCORES
     
-    when movePlayer2 is PAPER and movePlayer1 is ROCK then PLAYER2_WINS
-    when movePlayer2 is PAPER and movePlayer1 is SPOCK then PLAYER2_WINS
+    when player2Move is PAPER and player1Move is ROCK then PLAYER2_SCORES
+    when player2Move is PAPER and player1Move is SPOCK then PLAYER2_SCORES
         
-    when movePlayer2 is SCISSORS and movePlayer1 is PAPER then PLAYER2_WINS
-    when movePlayer2 is SCISSORS and movePlayer1 is LIZARD then PLAYER2_WINS
+    when player2Move is SCISSORS and player1Move is PAPER then PLAYER2_SCORES
+    when player2Move is SCISSORS and player1Move is LIZARD then PLAYER2_SCORES
     
-    when movePlayer2 is LIZARD and movePlayer1 is PAPER then PLAYER2_WINS
-    when movePlayer2 is LIZARD and movePlayer1 is SPOCK then PLAYER2_WINS
+    when player2Move is LIZARD and player1Move is PAPER then PLAYER2_SCORES
+    when player2Move is LIZARD and player1Move is SPOCK then PLAYER2_SCORES
     
-    when movePlayer2 is SPOCK and movePlayer1 is ROCK then PLAYER2_WINS
-    when movePlayer2 is SPOCK and movePlayer1 is SCISSORS then PLAYER2_WINS
+    when player2Move is SPOCK and player1Move is ROCK then PLAYER2_SCORES
+    when player2Move is SPOCK and player1Move is SCISSORS then PLAYER2_SCORES
 
