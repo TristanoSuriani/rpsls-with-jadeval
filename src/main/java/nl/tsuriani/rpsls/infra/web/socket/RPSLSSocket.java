@@ -13,10 +13,10 @@ import javax.websocket.OnOpen;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/socket/rpsls/{clientUUID}/{username}",
+/*@ServerEndpoint(value = "/socket/rpsls/{clientUUID}/{username}",
         decoders = {WebSocketInMessageDecoder.class},
         encoders = {WebSocketOutMessageEncoder.class}
-)
+)*/
 @ApplicationScoped
 public class RPSLSSocket {
 
