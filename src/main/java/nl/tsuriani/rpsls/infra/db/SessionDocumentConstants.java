@@ -1,6 +1,6 @@
 package nl.tsuriani.rpsls.infra.db;
 
-public class SessionDocumentConstants {
+public final class SessionDocumentConstants {
 	public static final String SESSION_UUID = "sessionUUID";
 	public static final String CLIENT_UUID_PLAYER1 = "clientUUIDPlayer1";
 	public static final String CLIENT_UUID_PLAYER2 = "clientUUIDPlayer2";
