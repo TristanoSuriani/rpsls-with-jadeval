@@ -1,4 +1,4 @@
-# rpsls-with-quarkus project
+# rpsls-with-jadeval project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
